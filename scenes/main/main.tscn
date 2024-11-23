@@ -1,0 +1,105 @@
+[gd_scene load_steps=13 format=3 uid="uid://d1ola6vbu7nr7"]
+
+[ext_resource type="PackedScene" uid="uid://jg04b088eu34" path="res://scenes/camera/camera.tscn" id="1_3jgux"]
+[ext_resource type="PackedScene" uid="uid://l2u3eba3urnc" path="res://assets/kenneys/kenney_platformer-kit/Models/GLB format/block-grass.glb" id="2_q5eo4"]
+[ext_resource type="PackedScene" uid="uid://hb0q5boekbvo" path="res://assets/kenneys/kenney_train-kit/Models/GLB format/railroad-corner-large.glb" id="3_4oite"]
+[ext_resource type="PackedScene" uid="uid://cuqfwfa6wdn70" path="res://scenes/trains/diesel/loco_a/train_diesel.tscn" id="4_fneox"]
+[ext_resource type="PackedScene" uid="uid://8tr6v4ldg1y7" path="res://scenes/trains/track/track.tscn" id="5_a8ojr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xp3ne"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_oiwp2"]
+sky_material = SubResource("ProceduralSkyMaterial_xp3ne")
+
+[sub_resource type="Environment" id="Environment_kawdx"]
+background_mode = 2
+sky = SubResource("Sky_oiwp2")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="Curve3D" id="Curve3D_bscqu"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(-2.3, 0, 0, 1.95, 0, 0, 0, 0, 4, 0, 0, 1.95, 0, 0, -1.7, 4, 0, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_jn6ky"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(-2.3, 0, 0, 0, 0, -1.95, 4, 0, 0, 1.95, 0, 0, 0, 0, -1.7, 0, 0, -4),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_2yijw"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(1.95, 0, 0, 0, 0, -1.95, -4, 0, 0, -1.95, 0, 0, 0, 0, -1.95, 0, 0, -4),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_86g7b"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(1.95, 0, 0, 0, 0, 1.95, -4, 0, 0, -1.95, 0, 0, 0, 0, -1.95, 0, 0, 4),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[node name="Main" type="Node3D"]
+
+[node name="CameraRig" parent="." node_paths=PackedStringArray("follower") instance=ExtResource("1_3jgux")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+frozen = true
+follower = NodePath("../Space/Train Diesel")
+
+[node name="Enviroment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Enviroment"]
+environment = SubResource("Environment_kawdx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Enviroment"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_energy = 0.3
+shadow_enabled = true
+
+[node name="Space" type="Node3D" parent="."]
+
+[node name="block-grass2" parent="Space" instance=ExtResource("2_q5eo4")]
+transform = Transform3D(21.6, 0, 0, 0, 1, 0, 0, 0, 21.6, 0, -1, 0)
+
+[node name="railroad-corner-large2" parent="Space" instance=ExtResource("3_4oite")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 0)
+visible = false
+
+[node name="railroad-corner-large3" parent="Space" instance=ExtResource("3_4oite")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, 4)
+visible = false
+
+[node name="railroad-corner-large4" parent="Space" instance=ExtResource("3_4oite")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -4, 1, 0)
+visible = false
+
+[node name="railroad-corner-large5" parent="Space" instance=ExtResource("3_4oite")]
+transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 0, 1, -4)
+visible = false
+
+[node name="Train Diesel" parent="Space" node_paths=PackedStringArray("initial_track") instance=ExtResource("4_fneox")]
+initial_track = NodePath("../Track")
+
+[node name="Track" parent="Space" instance=ExtResource("5_a8ojr")]
+curve = SubResource("Curve3D_bscqu")
+
+[node name="Track2" parent="Space" instance=ExtResource("5_a8ojr")]
+curve = SubResource("Curve3D_jn6ky")
+
+[node name="Track3" parent="Space" instance=ExtResource("5_a8ojr")]
+curve = SubResource("Curve3D_2yijw")
+
+[node name="Track4" parent="Space" instance=ExtResource("5_a8ojr")]
+curve = SubResource("Curve3D_86g7b")
